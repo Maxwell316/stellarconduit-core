@@ -252,9 +252,8 @@ pub async fn run_gossip_loop(
             // Topology change events — invalidate the cached routing table so the
             // next fanout round re-computes paths.
             event = async {
-                match topology_events.as_mut()? {
-                    rx => rx.recv().await.ok(),
-                }
+                let rx = topology_events.as_mut()?;
+                rx.recv().await.ok()
             }, if topology_events.is_some() => {
                 if let Some(event) = event {
                     log::debug!("Topology event received: {:?}", event);

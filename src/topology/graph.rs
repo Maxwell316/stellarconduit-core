@@ -18,11 +18,7 @@ impl MeshGraph {
         }
     }
 
-    pub fn apply_update(
-        &mut self,
-        update: &TopologyUpdate,
-        event_bus: Option<&TopologyEventBus>,
-    ) {
+    pub fn apply_update(&mut self, update: &TopologyUpdate, event_bus: Option<&TopologyEventBus>) {
         let prev_count = self.node_count();
         let origin = update.origin_pubkey;
         let mut set: HashSet<[u8; 32]> = HashSet::new();

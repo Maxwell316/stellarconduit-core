@@ -11,6 +11,7 @@ crate-type = ["cdylib", "rlib"]
 [dependencies]
 # Serialization and messaging
 serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
 rmp-serde = "1.1"                                  # MessagePack for compact mesh payloads
 
 # Cryptography and Identity

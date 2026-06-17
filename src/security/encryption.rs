@@ -10,10 +10,10 @@ use crate::transport::connection::{Connection, ConnectionState, TransportType};
 use crate::transport::errors::TransportError;
 
 /// Maximum Noise message size (65535 bytes as per Noise spec)
-const MAX_NOISE_MESSAGE_SIZE: usize = 65535;
+pub const MAX_NOISE_MESSAGE_SIZE: usize = 65535;
 
 /// Handshake timeout: 2 seconds
-const HANDSHAKE_TIMEOUT_SECS: u64 = 2;
+pub const HANDSHAKE_TIMEOUT_SECS: u64 = 2;
 
 #[derive(Debug, Clone, Error)]
 pub enum EncryptionError {
@@ -57,7 +57,7 @@ impl From<EncryptionError> for TransportError {
 
 /// Converts Ed25519 signing key to X25519 for use in Noise protocol.
 /// Per RFC 7748, the conversion uses SHA-512 clamping on the secret key.
-fn ed25519_to_x25519(signing_key: &SigningKey) -> Result<[u8; 32], EncryptionError> {
+pub fn ed25519_to_x25519(signing_key: &SigningKey) -> Result<[u8; 32], EncryptionError> {
     use sha2::{Digest, Sha512};
     
     // Extract the 32-byte seed from the signing key
@@ -329,7 +329,7 @@ impl<C: Connection + Send + Sync> EncryptedConnection<C> {
 }
 
 /// Frame a Noise message with a 2-byte big-endian length prefix.
-fn frame_noise_message(msg: &[u8]) -> Result<Vec<u8>, EncryptionError> {
+pub fn frame_noise_message(msg: &[u8]) -> Result<Vec<u8>, EncryptionError> {
     if msg.len() > MAX_NOISE_MESSAGE_SIZE {
         return Err(EncryptionError::InvalidMessageSize(format!(
             "Frame message size {} exceeds max {}",
@@ -345,7 +345,7 @@ fn frame_noise_message(msg: &[u8]) -> Result<Vec<u8>, EncryptionError> {
 }
 
 /// Unframe a Noise message by reading the 2-byte big-endian length prefix.
-fn unframe_noise_message(_msg: &ProtocolMessage) -> Result<Vec<u8>, EncryptionError> {
+pub fn unframe_noise_message(_msg: &ProtocolMessage) -> Result<Vec<u8>, EncryptionError> {
     // In practice, this would deserialize the ProtocolMessage and extract the raw bytes
     // For now, we return a placeholder
     Ok(Vec::new())

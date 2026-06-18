@@ -286,7 +286,7 @@ mod tests {
     #[test]
     fn test_mdns_txt_record_parsing() {
         let hex = valid_hex_pubkey();
-        let entries = vec![format!("pubkey={hex}"), "hops=3".into(), "version=1".into()];
+        let entries = [format!("pubkey={hex}"), "hops=3".into(), "version=1".into()];
         let refs: Vec<&str> = entries.iter().map(|s| s.as_str()).collect();
 
         let pubkey = parse_pubkey_from_txt(&refs).unwrap();
@@ -299,7 +299,7 @@ mod tests {
 
     #[test]
     fn test_mdns_handles_malformed_pubkey_txt() {
-        let entries = vec!["pubkey=not-a-hex-string".to_string(), "hops=3".into()];
+        let entries = ["pubkey=not-a-hex-string".to_string(), "hops=3".into()];
         let refs: Vec<&str> = entries.iter().map(|s| s.as_str()).collect();
 
         let result = parse_pubkey_from_txt(&refs);
@@ -328,7 +328,7 @@ mod tests {
     #[test]
     fn test_mdns_default_hops_when_missing() {
         let hex = valid_hex_pubkey();
-        let entries = vec![format!("pubkey={hex}")];
+        let entries = [format!("pubkey={hex}")];
         let refs: Vec<&str> = entries.iter().map(|s| s.as_str()).collect();
 
         let hops = parse_hops_from_txt(&refs).unwrap();

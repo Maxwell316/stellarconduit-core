@@ -562,7 +562,9 @@ mod ban_tests {
         let pubkey = [1u8; 32];
         let expires_at = now_secs() + 3600;
 
-        db.save_ban(&pubkey, expires_at, "invalid signatures").await.unwrap();
+        db.save_ban(&pubkey, expires_at, "invalid signatures")
+            .await
+            .unwrap();
 
         let bans = db.load_active_bans().await.unwrap();
         assert_eq!(bans.len(), 1);
@@ -607,10 +609,14 @@ mod ban_tests {
         let pubkey = [3u8; 32];
         let expires_at = now_secs() + 3600;
 
-        db.save_ban(&pubkey, expires_at, "restore test").await.unwrap();
+        db.save_ban(&pubkey, expires_at, "restore test")
+            .await
+            .unwrap();
 
         let peer_list = Arc::new(Mutex::new(PeerList::new(300)));
-        crate::security::peer_ban::restore_bans_from_db(&peer_list, &db).await.unwrap();
+        crate::security::peer_ban::restore_bans_from_db(&peer_list, &db)
+            .await
+            .unwrap();
 
         let guard = peer_list.lock().await;
         assert!(guard.is_peer_banned(&pubkey));
@@ -626,7 +632,9 @@ mod ban_tests {
         db.save_ban(&pubkey, expires_at, "old ban").await.unwrap();
 
         let peer_list = Arc::new(Mutex::new(PeerList::new(300)));
-        crate::security::peer_ban::restore_bans_from_db(&peer_list, &db).await.unwrap();
+        crate::security::peer_ban::restore_bans_from_db(&peer_list, &db)
+            .await
+            .unwrap();
 
         let guard = peer_list.lock().await;
         assert!(!guard.is_peer_banned(&pubkey));
